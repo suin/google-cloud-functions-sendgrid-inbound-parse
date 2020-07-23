@@ -1,0 +1,13 @@
+.gcloudignore
+.git
+.gitignore
+#!include:.gitignore
+/.idea
+/.github
+/.prettierignore
+/LICENSE
+*.md
+*.sh
+*.spec.ts
+*.test.ts
+/types/mock-*
