@@ -15,7 +15,7 @@ export const parseEmailData = (emailRawString: string): Promise<EmailData> =>
             subject: parsed.subject,
             bodyText: parsed.text || undefined,
             bodyHtml: parsed.html || undefined,
-            date: parsed.date?.toISOString(), // todo
+            date: parsed.date?.toISOString(),
             source: emailRawString,
           }),
     ),
