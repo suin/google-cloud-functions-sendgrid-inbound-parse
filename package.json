@@ -59,6 +59,7 @@
   "dependencies": {
     "@google-cloud/pubsub": "^2.2.0",
     "@suin/email-data": "^1.0.0",
+    "@suin/event-data": "^1.0.0",
     "busboy": "^0.3.1",
     "mailparser": "^2.7.7",
     "zod": "^1.10.0"

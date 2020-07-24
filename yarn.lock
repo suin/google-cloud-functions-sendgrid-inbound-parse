@@ -850,6 +850,18 @@
   dependencies:
     zod "^1.10.0"
 
+"@suin/event-data@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@suin/event-data/-/event-data-1.0.0.tgz#ebc8d19e7df770f414b7d38ec91960f666b393c4"
+  integrity sha512-rmfG2Zy/hWlnL1garcDy9gA6+QB6lLLxtufpWc+3J03zHioxijaI74GrSZpo+m0PLScxHV3pMVotKSvV9D6Qlg==
+  dependencies:
+    "@suin/is-object" "^1.1.3"
+
+"@suin/is-object@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@suin/is-object/-/is-object-1.1.3.tgz#dc0c6d4eb712631c69550e7bf0f577529af0e968"
+  integrity sha512-LjFRRRiKwYJkEpJqUaNVvHe2zMFT/lACh2gGgDDASMHc4zGKXrr+Ch33SJbejeuRkUJmBOkzLdWbIFr9XnJcVQ==
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"

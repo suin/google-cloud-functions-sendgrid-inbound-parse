@@ -1,5 +1,6 @@
 import type { Topic } from '@google-cloud/pubsub'
 import type { EmailData } from '@suin/email-data'
+import { newEventData } from '@suin/event-data'
 import type { Request, Response } from 'express'
 import { parseEmailData } from './parseEmailData'
 import { FormData, parseFormData } from './parseFormData'
@@ -54,7 +55,7 @@ export const createHttpFunction = ({
 
   // Publishes email
   try {
-    const event: Event = { correlationId, email: emailData }
+    const event = newEventData({ correlationId, data: emailData })
     await topic.publish(Buffer.from(JSON.stringify(event), 'utf8'))
     logger.info(`Successfully published the email to topic ${topic.name}`)
   } catch (error) {
@@ -93,11 +94,6 @@ const defaultLogger: Logger = {
 export type Dependencies = {
   readonly topic: Pick<Topic, 'publish' | 'name'>
   readonly logger?: Logger
-}
-
-export type Event = {
-  readonly correlationId: string
-  readonly email: EmailData
 }
 
 export type Logger = Pick<Console, 'info' | 'error'>

@@ -1,24 +1,31 @@
+import { isEmailData } from '@suin/email-data'
 import FormData from 'form-data'
 import MockExpressRequest from 'mock-express-request'
 import MockExpressResponse from 'mock-express-response'
 import MailComposer from 'nodemailer/lib/mail-composer'
 import Mail from 'nodemailer/lib/mailer'
-import { createHttpFunction, Logger } from './createHttpFunction'
+import { createHttpFunction, Dependencies, Logger } from './createHttpFunction'
 
 describe('createHttpFunction', () => {
   const mutedLogger: Logger = {
     info: () => {},
     error: () => {},
   }
-  const topicStub = {
+  let publishedEvents: any[]
+  const topicStub: Dependencies['topic'] = {
     name: 'topic-name',
-    async publish() {
+    publish: async (event: Buffer) => {
+      publishedEvents.push(JSON.parse(event.toString()))
       return '' // do nothing
     },
   }
   const publishEmailOnSendGridInboundParse = createHttpFunction({
     topic: topicStub,
     logger: mutedLogger,
+  })
+
+  beforeEach(() => {
+    publishedEvents = []
   })
 
   it('responds status 405 if the method is not POST', async () => {
@@ -43,6 +50,25 @@ describe('createHttpFunction', () => {
     const res = new MockExpressResponse()
     await publishEmailOnSendGridInboundParse(req, res)
     expect(res.statusCode).toBe(200)
+  })
+
+  it('publishes an event', async () => {
+    const form = await createSendGridFormData({
+      to: 'to@example.com',
+      from: 'from@example.com',
+      subject: 'subject',
+      text: 'Hello',
+    })
+    const req = new MockExpressRequest({
+      method: 'POST',
+      headers: { 'function-execution-id': 'dummy-id', ...form.getHeaders() },
+      rawBody: form.getBuffer(),
+    })
+    const res = new MockExpressResponse()
+    await publishEmailOnSendGridInboundParse(req, res)
+    const [event] = publishedEvents
+    expect(event.correlationId).toBe('dummy-id')
+    expect(isEmailData(event.data)).toBe(true)
   })
 })
 
